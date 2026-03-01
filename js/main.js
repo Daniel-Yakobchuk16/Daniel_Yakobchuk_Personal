@@ -94,3 +94,32 @@ function loadContent(page) {
         }, 1000); // Задержка должна совпадать с временем в CSS (1s)
     });
 }
+
+// WHITE THEME
+
+window.addEventListener("DOMContentLoaded", () => {
+    const switchInput = document.querySelector(".switch__input");
+
+    const savedTheme = localStorage.getItem("theme");
+
+    // если сохранена тёмная тема
+    if (savedTheme === "dark") {
+        document.body.removeAttribute("data-theme"); // твоя dark по умолчанию
+        switchInput.checked = true;
+    } else {
+        document.body.dataset.theme = "light";
+        switchInput.checked = false;
+    }
+
+    switchInput.addEventListener("change", () => {
+        if (switchInput.checked) {
+            // DARK MODE
+            document.body.removeAttribute("data-theme");
+            localStorage.setItem("theme", "dark");
+        } else {
+            // LIGHT MODE
+            document.body.dataset.theme = "light";
+            localStorage.setItem("theme", "light");
+        }
+    });
+});

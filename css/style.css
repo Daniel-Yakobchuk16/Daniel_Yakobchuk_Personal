@@ -2,21 +2,94 @@
     width: 0px;  /* ширина scrollbar'a */
     background: transparent;  /* опционально */
 }
+
+:root {
+    --bg-color: hsl(0, 0%, 10%);
+    --text-color: hsl(0, 0%, 95%);
+    --border-color: white;
+    --hue: 223;
+	--trans-dur: 0.4s;
+	--trans-timing: cubic-bezier(0.65,0,0.35,1);
+}
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'PP Neue Montreal', sans-serif;
     font-weight: 600;
-    background-color: hsl(0, 0%, 10%);
-    color: hsl(0, 0%, 95%);
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.4s ease, color 0.4s ease;
 }
 
 body.overflow-hidden {
     overflow: hidden;
 }
 
-p {
+/* Bg Video */
+.myVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.video_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: -1;
+}
+
+/* White Theme */
+
+.theme_toggle {
+    margin-top: 30px;
+    padding: 8px 18px;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme_toggle:hover {
+    background: currentColor;
+    color: hsl(0, 0%, 10%);
+}
+
+body[data-theme="light"] {
+    --bg-color: transparent;
+    --text-color: hsl(0, 0%, 12%); /* тёмный текст */
+    --border-color: rgba(0,0,0,0.4);
+    text-shadow: none; /* убираем тень, она не нужна для тёмного текста */
+}
+body[data-theme="light"] .myVideo {
+    filter: brightness(1.15) contrast(0.9);
+    
+}
+body[data-theme="light"] .video_overlay {
+    background: rgba(0, 0, 0, 0.18);
+    background-color: hsla(0, 0%, 85%, 0.322);
+}
+
+body[data-theme="light"] .main_inside {
+    backdrop-filter: blur(10px);
+}
+
+p{
     display: block;
     margin-block-start: 1em;
     margin-block-end: 1em;
@@ -25,7 +98,7 @@ p {
     unicode-bidi: isolate;
 }
 
-a {
+a{
     color: inherit;
     text-decoration: none;
 }
@@ -41,13 +114,14 @@ a {
 .main_inside {
     width: 100%; /* Занимает 100% доступной ширины в родительском элементе */
     height: 100%; /* Занимает 100% доступной высоты в родительском элементе */
-    border: 1px solid white; /* Рамка */
+    border: 1px solid var(--border-color);
+    background: transparent;
     padding: 10px; /* Внутренние отступы для содержимого */
     box-sizing: border-box; /* Учитываем рамку и отступы в общей ширине и высоте */
     max-width: 100%;
     position: relative; /* Убедитесь, что позиция задана */
     z-index: 10; /* Установите высокий z-index */
-    background: hsl(0, 0%, 10%); /* Убедитесь, что есть фон */
+    backdrop-filter: blur(6px);
 }
 
 .main_header {
@@ -255,6 +329,205 @@ a {
     margin-top: 3vh;
 }
 
+/* THEME TOGGLE */
+
+.switch {
+    position: fixed;   /* фиксируем к экрану */
+    top: 30px;
+    right: 40px;
+    z-index: 1000;
+    margin: auto;
+}
+
+.switch,
+.switch__input {
+	position: relative;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.switch__input,
+.switch__input:before {
+	background-color: hsl(var(--hue),10%,10%);
+}
+
+.switch__input {
+	border-radius: 0.75em;
+	cursor: pointer;
+	display: block;
+	width: 3em;
+	height: 1.5em;
+	transition: background-color var(--trans-dur) var(--trans-timing);
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.switch__input:before {
+	border-radius: 50%;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0.125em;
+	left: 0.125em;
+	width: 1.25em;
+	height: 1.25em;
+	transition:
+		background-color var(--trans-dur) var(--trans-timing),
+		transform var(--trans-dur) var(--trans-timing);
+}
+
+.switch__icon,
+.switch__icon-part {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.switch__icon {
+	background-color: hsl(var(--hue),10%,90%);
+	border-radius: 50%;
+	overflow: hidden;
+	pointer-events: none;
+	top: 0.125em;
+	left: 0.125em;
+	width: 1.25em;
+	height: 1.25em;
+	transition: transform var(--trans-dur) var(--trans-timing);
+}
+
+.switch__icon-part {
+	transition:
+		box-shadow var(--trans-dur) var(--trans-timing),
+		transform var(--trans-dur) var(--trans-timing);
+}
+
+.switch__icon-part--1,
+.switch__icon-part--2,
+.switch__icon-part--3 {
+	border-radius: 50%;
+}
+
+.switch__icon-part--1 {
+	background-color: hsl(var(--hue),10%,90%);
+	top: calc(50% - 0.375em);
+	left: calc(50% - 0.375em);
+	width: 0.75em;
+	height: 0.75em;
+}
+
+.switch__icon-part--2 {
+	background-color: hsl(var(--hue),10%,10%);
+	top: calc(50% - 0.4375em);
+	left: calc(50% - 0.0625em);
+	width: 0.5em;
+	height: 0.5em;
+	transform: translate(-0.1875em,0.1875em) scale(0.2);
+}
+
+.switch__icon-part--3 {
+	box-shadow: 0 0 0 0.625em hsl(var(--hue),10%,10%) inset;
+	width: 1.25em;
+	height: 1.25em;
+	transform: scale(0.25);
+}
+
+.switch__icon-part--3 ~ .switch__icon-part {
+	background-color: hsl(var(--hue),10%,10%);
+	border-radius: 0.0625em;
+	top: 50%;
+	left: 50%;
+	width: 0.125em;
+	height: 0.1875em;
+	transform-origin: 50% 0;
+}
+
+.switch__icon-part--4 {
+	transform: translateX(-50%) rotate(0) translateY(0.25em);
+}
+.switch__icon-part--5 {
+	transform: translateX(-50%) rotate(45deg) translateY(0.25em);
+}
+.switch__icon-part--6 {
+	transform: translateX(-50%) rotate(90deg) translateY(0.25em);
+}
+.switch__icon-part--7 {
+	transform: translateX(-50%) rotate(135deg) translateY(0.25em);
+}
+.switch__icon-part--8 {
+	transform: translateX(-50%) rotate(180deg) translateY(0.25em);
+}
+.switch__icon-part--9 {
+	transform: translateX(-50%) rotate(225deg) translateY(0.25em);
+}
+.switch__icon-part--10 {
+	transform: translateX(-50%) rotate(270deg) translateY(0.25em);
+}
+.switch__icon-part--11 {
+	transform: translateX(-50%) rotate(315deg) translateY(0.25em);
+}
+
+.switch__sr {
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+}
+
+/* `:checked` state */
+.switch__input:checked {
+	background-color: hsl(var(--hue),10%,90%);
+}
+
+.switch__input:checked:before,
+.switch__input:checked ~ .switch__icon {
+	transform: translateX(1.5em);
+}
+
+.switch__input:checked ~ .switch__icon .switch__icon-part--2 {
+	transform: translate(0,0) scale(1);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--3 {
+	box-shadow: 0 0 0 0.25em hsl(var(--hue),10%,10%) inset;
+	transform: scale(1);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--4 {
+	transform: translateX(-50%) rotate(0) translateY(0.625em) scale(0);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--5 {
+	transform: translateX(-50%) rotate(45deg) translateY(0.625em) scale(0);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--6 {
+	transform: translateX(-50%) rotate(90deg) translateY(0.625em) scale(0);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--7 {
+	transform: translateX(-50%) rotate(135deg) translateY(0.625em) scale(0);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--8 {
+	transform: translateX(-50%) rotate(180deg) translateY(0.625em) scale(0);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--9 {
+	transform: translateX(-50%) rotate(225deg) translateY(0.625em) scale(0);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--10 {
+	transform: translateX(-50%) rotate(270deg) translateY(0.625em) scale(0);
+}
+.switch__input:checked ~ .switch__icon .switch__icon-part--11 {
+	transform: translateX(-50%) rotate(315deg) translateY(0.625em) scale(0);
+}
+
+body:has(.switch__input:checked) {
+	background-color: hsl(var(--hue),10%,10%);
+	color: hsl(var(--hue),10%,90%);
+}
+
+.switch {
+    position: fixed !important;
+    right: 40px !important;
+    left: auto !important;
+    bottom: auto !important;
+    z-index: 9999;
+    margin-top: -25px;
+}
 
 /* Мобильные устройства (до 768px) */
 @media (max-width: 768px) {

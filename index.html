@@ -10,10 +10,24 @@
     <link rel="icon" type="image/x-icon" href="images/website_logo.png">     <!--Фото сайта  -->
 </head>
 <body>
+
     <div class="main">
 
+        <video 
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
+            class="myVideo"
+            >
+            <source src="./images/bg_video.mp4" type="video/mp4">
+        </video>
+
+        <div class="video_overlay"></div>   
+
         <div class="main_inside">
-        
             <header class="main_header">
 
                 <h1 class="main_header_title">
@@ -40,7 +54,9 @@
                         </li>
                     </ol>
                 </nav>
-
+                <!-- <button class="theme_toggle" onclick="toggleTheme()">
+                    Light
+                </button> -->
             </header>
 
             <main id="content" class="content">
@@ -64,6 +80,23 @@
         </div>
 
     </div>
+    <label class="switch">
+                    <input class="switch__input" type="checkbox" role="switch" />
+                    <span class="switch__icon">
+                        <span class="switch__icon-part switch__icon-part--1"></span>
+                        <span class="switch__icon-part switch__icon-part--2"></span>
+                        <span class="switch__icon-part switch__icon-part--3"></span>
+                        <span class="switch__icon-part switch__icon-part--4"></span>
+                        <span class="switch__icon-part switch__icon-part--5"></span>
+                        <span class="switch__icon-part switch__icon-part--6"></span>
+                        <span class="switch__icon-part switch__icon-part--7"></span>
+                        <span class="switch__icon-part switch__icon-part--8"></span>
+                        <span class="switch__icon-part switch__icon-part--9"></span>
+                        <span class="switch__icon-part switch__icon-part--10"></span>
+                        <span class="switch__icon-part switch__icon-part--11"></span>
+                    </span>
+                    <span class="switch__sr">Dark Mode</span>
+                </label>
     <div class="footer_note">© Daniel Yakobchuk</div>
     <script src='js/main.js'></script>
 </body>
